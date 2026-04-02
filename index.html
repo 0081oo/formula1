@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <!-- 메타 태그: 문자 인코딩과 반응형 뷰포트 설정 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Dashboard — Formula 1 통계 대시보드</title>
+
+    <!-- 구글 폰트: Orbitron(제목용 미래적 레이싱 느낌) + Rajdhani(본문용 기술적 느낌) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- 스타일시트 연결 -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 로딩 오버레이: 데이터 불러오는 동안 표시되는 애니메이션 -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-content">
+            <!-- F1 스타일 로딩 스피너 -->
+            <div class="loading-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+            </div>
+            <h2 class="loading-title">LOADING DATA</h2>
+            <p class="loading-subtitle">Formula 1 통계를 불러오는 중...</p>
+            <!-- 로딩 진행 바 -->
+            <div class="loading-bar">
+                <div class="loading-bar-fill" id="loading-bar-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 헤더 영역: F1 로고와 시즌 필터 -->
+    <header class="header">
+        <div class="header-inner">
+            <!-- 로고 및 타이틀 -->
+            <div class="header-logo">
+                <div class="logo-icon">F1</div>
+                <div class="header-titles">
+                    <h1 class="header-title">FORMULA 1 DASHBOARD</h1>
+                    <p class="header-subtitle">시즌별 드라이버 & 컨스트럭터 통계</p>
+                </div>
+            </div>
+            <!-- 시즌 선택 필터 드롭다운 -->
+            <div class="season-filter">
+                <label for="season-select" class="filter-label">SEASON</label>
+                <select id="season-select" class="filter-select">
+                    <option value="">로딩 중...</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <main class="main-content">
+        <!-- 상단 통계 카드 섹션: 최다 우승, 최다 폴, 최다 포인트 -->
+        <section class="stats-section">
+            <div class="section-header">
+                <h2 class="section-title">SEASON HIGHLIGHTS</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="stats-grid" id="stats-grid">
+                <!-- 자바스크립트로 동적 생성됨 -->
+            </div>
+        </section>
+
+        <!-- 드라이버 카드 섹션: 시즌별 드라이버 프로필 카드 -->
+        <section class="drivers-section">
+            <div class="section-header">
+                <h2 class="section-title">DRIVERS</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="drivers-grid" id="drivers-grid">
+                <!-- 자바스크립트로 동적 생성됨 -->
+            </div>
+        </section>
+
+        <!-- 드라이버 순위 테이블 섹션 -->
+        <section class="standings-section">
+            <div class="section-header">
+                <h2 class="section-title">DRIVER STANDINGS</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="table-container">
+                <table class="standings-table" id="driver-standings-table">
+                    <thead>
+                        <tr>
+                            <th>순위</th>
+                            <th>드라이버</th>
+                            <th>국적</th>
+                            <th>팀</th>
+                            <th>승수</th>
+                            <th>포인트</th>
+                        </tr>
+                    </thead>
+                    <tbody id="driver-standings-body">
+                        <!-- 자바스크립트로 동적 생성됨 -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 컨스트럭터 순위 테이블 섹션 -->
+        <section class="standings-section">
+            <div class="section-header">
+                <h2 class="section-title">CONSTRUCTOR STANDINGS</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="table-container">
+                <table class="standings-table" id="constructor-standings-table">
+                    <thead>
+                        <tr>
+                            <th>순위</th>
+                            <th>컨스트럭터</th>
+                            <th>승수</th>
+                            <th>포인트</th>
+                        </tr>
+                    </thead>
+                    <tbody id="constructor-standings-body">
+                        <!-- 자바스크립트로 동적 생성됨 -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 영역 -->
+    <footer class="footer">
+        <p>F1 Dashboard &copy; 2026 — Data sourced from Ergast F1 Database</p>
+    </footer>
+
+    <!-- 애플리케이션 스크립트 -->
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,777 @@
+/* ===================================================================
+   F1 대시보드 스타일시트
+   - F1 인스파이어드 다크 크롬 테마
+   - 카본 파이버 텍스처, 레드 액센트, 메탈릭 실버 디테일
+   =================================================================== */
+
+/* --- CSS 변수: 전체 색상 팔레트 및 디자인 토큰 정의 --- */
+:root {
+    /* 기본 배경 색상 (다크 테마) */
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #121212;
+    --bg-card: #1a1a1a;
+    --bg-card-hover: #222222;
+    --bg-table-row: #161616;
+    --bg-table-row-alt: #1c1c1c;
+    --bg-table-row-hover: #2a1a1a;
+
+    /* F1 레드 액센트 (페라리/F1 로고 영감) */
+    --red-primary: #e10600;
+    --red-dark: #b30500;
+    --red-glow: rgba(225, 6, 0, 0.3);
+    --red-subtle: rgba(225, 6, 0, 0.1);
+
+    /* 메탈릭 실버 디테일 */
+    --silver-bright: #e8e8e8;
+    --silver-medium: #a0a0a0;
+    --silver-dark: #666666;
+    --silver-muted: #444444;
+
+    /* 골드 (1위 강조용) */
+    --gold: #ffd700;
+    --gold-dark: #b8960f;
+
+    /* 텍스트 색상 */
+    --text-primary: #f0f0f0;
+    --text-secondary: #b0b0b0;
+    --text-muted: #707070;
+
+    /* 보더 및 구분선 */
+    --border-color: #2a2a2a;
+    --border-highlight: #3a3a3a;
+
+    /* 폰트 패밀리 */
+    --font-heading: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+
+    /* 그림자 효과 */
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --shadow-card-hover: 0 8px 32px rgba(225, 6, 0, 0.15), 0 4px 20px rgba(0, 0, 0, 0.5);
+    --shadow-header: 0 2px 20px rgba(0, 0, 0, 0.6);
+
+    /* 트랜지션 기본값 */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* 레이아웃 */
+    --max-width: 1400px;
+    --padding-section: 2rem;
+    --border-radius: 8px;
+}
+
+/* --- 글로벌 리셋 및 기본 스타일 --- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 전체 페이지 기본 스타일: 다크 배경 + Rajdhani 본문 폰트 */
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    /* 카본 파이버 텍스처 느낌의 반복 패턴 배경 */
+    background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(225, 6, 0, 0.03) 0%, transparent 60%),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.01) 2px,
+            rgba(255, 255, 255, 0.01) 4px
+        );
+}
+
+/* ===================================================================
+   로딩 오버레이: 데이터 로딩 중 전체 화면 덮는 애니메이션
+   =================================================================== */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+/* 로딩 완료 시 숨김 처리 */
+.loading-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* 로딩 콘텐츠 중앙 정렬 */
+.loading-content {
+    text-align: center;
+}
+
+/* F1 스타일 회전 스피너 */
+.loading-spinner {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+}
+
+/* 스피너 링: 3개의 동심원이 각기 다른 속도로 회전 */
+.spinner-ring {
+    position: absolute;
+    border: 3px solid transparent;
+    border-radius: 50%;
+}
+
+.spinner-ring:nth-child(1) {
+    width: 80px;
+    height: 80px;
+    border-top-color: var(--red-primary);
+    animation: spin 1s linear infinite;
+}
+
+.spinner-ring:nth-child(2) {
+    width: 60px;
+    height: 60px;
+    top: 10px;
+    left: 10px;
+    border-right-color: var(--silver-bright);
+    animation: spin 1.5s linear infinite reverse;
+}
+
+.spinner-ring:nth-child(3) {
+    width: 40px;
+    height: 40px;
+    top: 20px;
+    left: 20px;
+    border-bottom-color: var(--red-primary);
+    animation: spin 2s linear infinite;
+}
+
+/* 스피너 회전 애니메이션 */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 로딩 제목 텍스트 */
+.loading-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    letter-spacing: 4px;
+    margin-bottom: 0.5rem;
+}
+
+/* 로딩 부제목 */
+.loading-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+/* 로딩 진행 바 트랙 */
+.loading-bar {
+    width: 240px;
+    height: 3px;
+    background: var(--border-color);
+    border-radius: 2px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+/* 로딩 진행 바 채움: 좌우 반복 애니메이션 */
+.loading-bar-fill {
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--red-primary), var(--gold));
+    border-radius: 2px;
+    animation: loading-slide 1.2s ease-in-out infinite;
+}
+
+/* 로딩 바 슬라이드 애니메이션 */
+@keyframes loading-slide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(350%); }
+}
+
+/* ===================================================================
+   헤더: 상단 네비게이션 바 (F1 로고 + 시즌 필터)
+   =================================================================== */
+.header {
+    /* 반투명 다크 배경 + 블러 효과 */
+    background: linear-gradient(180deg, rgba(18, 18, 18, 0.98) 0%, rgba(10, 10, 10, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-header);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* 헤더 내부 레이아웃: 로고와 필터 양쪽 정렬 */
+.header-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 1rem var(--padding-section);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+/* 로고 + 타이틀 그룹 */
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* F1 로고 아이콘: 레드 배경의 'F1' 텍스트 배지 */
+.logo-icon {
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: white;
+    background: var(--red-primary);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    letter-spacing: -1px;
+    /* 레드 글로우 효과 */
+    box-shadow: 0 0 20px var(--red-glow);
+}
+
+/* 헤더 타이틀 영역 */
+.header-titles {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 메인 타이틀: Orbitron 폰트 */
+.header-title {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--text-primary);
+}
+
+/* 서브 타이틀 */
+.header-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+}
+
+/* 시즌 필터 컨테이너 */
+.season-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+/* 필터 라벨 텍스트 */
+.filter-label {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    color: var(--silver-medium);
+    letter-spacing: 2px;
+}
+
+/* 시즌 드롭다운 셀렉트 박스: 다크 테마 커스텀 스타일 */
+.filter-select {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: var(--bg-card);
+    border: 1px solid var(--border-highlight);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    cursor: pointer;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    /* 커스텀 화살표 아이콘 */
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23e10600' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+}
+
+/* 셀렉트 박스 포커스/호버 상태 */
+.filter-select:hover,
+.filter-select:focus {
+    border-color: var(--red-primary);
+    box-shadow: 0 0 10px var(--red-glow);
+    outline: none;
+}
+
+/* 셀렉트 박스 옵션 스타일 */
+.filter-select option {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* ===================================================================
+   메인 콘텐츠 영역
+   =================================================================== */
+.main-content {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--padding-section);
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+/* 섹션 헤더: 제목 + 레드 라인 장식 */
+.section-header {
+    margin-bottom: 1.5rem;
+}
+
+/* 섹션 제목 텍스트 */
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+/* 섹션 제목 아래 레드 액센트 라인 */
+.section-line {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red-primary), transparent);
+    border-radius: 2px;
+}
+
+/* ===================================================================
+   상단 통계 카드 그리드: 시즌 하이라이트 (최다 우승/폴/포인트)
+   =================================================================== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.2rem;
+}
+
+/* 개별 통계 카드 */
+.stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--transition-medium), box-shadow var(--transition-medium), border-color var(--transition-medium);
+}
+
+/* 통계 카드 상단 레드 액센트 바 */
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red-primary), var(--red-dark));
+}
+
+/* 통계 카드 호버 효과: 살짝 올라감 + 레드 글로우 */
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--border-highlight);
+}
+
+/* 통계 라벨 (예: "MOST WINS") */
+.stat-label {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    color: var(--red-primary);
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+}
+
+/* 통계 값 (예: 드라이버 이름) */
+.stat-value {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.3rem;
+}
+
+/* 통계 부가 정보 (예: "7 wins") */
+.stat-detail {
+    font-size: 1rem;
+    color: var(--silver-medium);
+}
+
+/* 통계 아이콘 (카드 우측 상단) */
+.stat-icon {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    font-size: 2rem;
+    opacity: 0.15;
+}
+
+/* ===================================================================
+   드라이버 카드 그리드
+   =================================================================== */
+.drivers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.2rem;
+}
+
+/* 개별 드라이버 카드 */
+.driver-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--transition-medium), box-shadow var(--transition-medium), border-color var(--transition-medium);
+    /* 등장 애니메이션 초기 상태 */
+    opacity: 0;
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+/* 드라이버 카드 호버 효과 */
+.driver-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--border-highlight);
+}
+
+/* 드라이버 카드 좌측 컬러 바 (팀 색상) */
+.driver-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--red-primary);
+}
+
+/* 드라이버 카드 상단: 국기 + 이름 */
+.driver-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+/* 국적 깃발 이모지 */
+.driver-flag {
+    font-size: 1.6rem;
+    line-height: 1;
+}
+
+/* 드라이버 이름 영역 */
+.driver-name-group {
+    flex: 1;
+}
+
+/* 드라이버 이름 */
+.driver-name {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+}
+
+/* 드라이버 코드 (예: HAM, VER) */
+.driver-code {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    color: var(--red-primary);
+    letter-spacing: 2px;
+}
+
+/* 드라이버 카드 하단: 팀 + 포인트 정보 */
+.driver-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* 팀 이름 텍스트 */
+.driver-team {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* 포인트 배지 */
+.driver-points {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold);
+    background: rgba(255, 215, 0, 0.1);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+}
+
+/* 카드 등장 애니메이션 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================================================================
+   순위 테이블 (드라이버 & 컨스트럭터)
+   =================================================================== */
+
+/* 테이블 감싸기 컨테이너: 가로 스크롤 지원 */
+.table-container {
+    overflow-x: auto;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+}
+
+/* 테이블 기본 스타일 */
+.standings-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+/* 테이블 헤더 행 */
+.standings-table thead tr {
+    background: linear-gradient(180deg, #1e1e1e, #161616);
+    border-bottom: 2px solid var(--red-primary);
+}
+
+/* 테이블 헤더 셀 */
+.standings-table th {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--silver-medium);
+    text-transform: uppercase;
+    padding: 1rem 1.2rem;
+    text-align: left;
+    white-space: nowrap;
+}
+
+/* 테이블 데이터 셀 */
+.standings-table td {
+    padding: 0.8rem 1.2rem;
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
+}
+
+/* 테이블 행 교대 배경색 (지브라 스트라이프) */
+.standings-table tbody tr:nth-child(odd) {
+    background: var(--bg-table-row);
+}
+
+.standings-table tbody tr:nth-child(even) {
+    background: var(--bg-table-row-alt);
+}
+
+/* 테이블 행 호버 효과 */
+.standings-table tbody tr {
+    transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.standings-table tbody tr:hover {
+    background: var(--bg-table-row-hover);
+}
+
+/* 순위 셀: 1~3위 특별 스타일 */
+.position-cell {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+/* 1위: 골드 */
+.position-1 {
+    color: var(--gold);
+}
+
+/* 2위: 실버 */
+.position-2 {
+    color: var(--silver-bright);
+}
+
+/* 3위: 브론즈 */
+.position-3 {
+    color: #cd7f32;
+}
+
+/* 드라이버/컨스트럭터 이름 셀 */
+.name-cell {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* 포인트 셀 강조 */
+.points-cell {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--gold);
+}
+
+/* 승수 셀 */
+.wins-cell {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--red-primary);
+}
+
+/* ===================================================================
+   푸터
+   =================================================================== */
+.footer {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 2rem var(--padding-section);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* ===================================================================
+   반응형 레이아웃: 태블릿 (768px 이하)
+   =================================================================== */
+@media (max-width: 768px) {
+    /* 헤더를 세로 방향으로 변경 */
+    .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    /* 섹션 패딩 축소 */
+    .main-content {
+        padding: 1rem;
+        gap: 2rem;
+    }
+
+    /* 제목 크기 축소 */
+    .header-title {
+        font-size: 1rem;
+        letter-spacing: 2px;
+    }
+
+    /* 통계 카드 단일 열로 변경 */
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* 드라이버 카드 2열 유지 */
+    .drivers-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+/* ===================================================================
+   반응형 레이아웃: 모바일 (480px 이하)
+   =================================================================== */
+@media (max-width: 480px) {
+    /* 로고 크기 축소 */
+    .logo-icon {
+        font-size: 1.4rem;
+        padding: 0.2rem 0.6rem;
+    }
+
+    /* 헤더 제목 축소 */
+    .header-title {
+        font-size: 0.85rem;
+    }
+
+    /* 드라이버 카드 단일 열 */
+    .drivers-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* 시즌 필터 전체 너비 */
+    .season-filter {
+        width: 100%;
+    }
+
+    .filter-select {
+        flex: 1;
+    }
+
+    /* 테이블 폰트 축소 */
+    .standings-table {
+        font-size: 0.85rem;
+    }
+
+    .standings-table th,
+    .standings-table td {
+        padding: 0.6rem 0.8rem;
+    }
+}
+
+/* ===================================================================
+   유틸리티: 스크롤바 커스터마이징 (웹킷 브라우저)
+   =================================================================== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+/* 스크롤바 핸들: 다크 그레이 + 호버 시 레드 */
+::-webkit-scrollbar-thumb {
+    background: var(--silver-muted);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--red-primary);
+}
+
+/* ===================================================================
+   셀렉션 하이라이트 색상: F1 레드
+   =================================================================== */
+::selection {
+    background: var(--red-primary);
+    color: white;
+}
+
+/* ===================================================================
+   빈 상태 메시지 (데이터 없을 때)
+   =================================================================== */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+    font-size: 1rem;
+}

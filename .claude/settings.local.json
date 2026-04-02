@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&sheet=drivers\")",
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&sheet=results\")",
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&sheet=races\")",
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&sheet=constructor_standings\")",
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&sheet=driver_standings\")",
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&sheet=results\" -o /tmp/f1_results.csv)",
+      "Read(//tmp/**)",
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&sheet=races\" -o /tmp/f1_races.csv)",
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&sheet=drivers\" -o /tmp/f1_drivers.csv)",
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&sheet=constructor_standings\" -o /tmp/f1_constructor_standings.csv)",
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&sheet=driver_standings\" -o /tmp/f1_driver_standings.csv)",
+      "Bash(curl -sIL \"https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&sheet=results\")",
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&gid=0\")",
+      "Bash(curl -sL \"https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&gid=1\")",
+      "Bash(ls /tmp/f1_*.csv)",
+      "Bash(python3 -c ':*)",
+      "Bash(curl -sL 'https://docs.google.com/spreadsheets/d/15QqBovMWmwoLoGdRRPeUqi3qvUJ7hBUSHCqSqu3MkUQ/export?format=csv&gid=__TRACKED_VAR__')",
+      "Bash(curl:*)",
+      "WebFetch(domain:docs.google.com)"
+    ]
+  }
+}
